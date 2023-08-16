@@ -5,7 +5,6 @@ const UseRef = () => {
   const inputRef = useRef(null);
   const onClick = () => {
     console.log(inputRef.current.focus());
-    //inputRef.current.value = ''
   };
 
   return (

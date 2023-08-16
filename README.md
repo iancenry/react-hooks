@@ -1,6 +1,6 @@
 # React Hooks
 
-## useState Hook
+## useState
 
 - React has the notion of the state of the application, this is the whole thing i.e., the UI, the logic, the variables etc.
 - This hook helps in changing the state by using a setter function to update the variable which will trigger a render. Without it, for example if value is stored in a variable, any changes eg in a counter will go up but won't reflect in the UI.
@@ -85,3 +85,7 @@ const UseReducer = () => {
 - Access current referenced element with `.current` and add `.` syntax to access all the properties an input element can have eg get an input's value with `.value` so `.current.value`
 
 ## useLayoutEffect
+
+- Similar to useEffect the difference is that useLayoutEffect is called in an earlier stage of the page rendering.
+- useEffect is called after everything is rendered into the page and shown to the user while useLayoutEffect is called before stuff is printed to the user.
+- Can be used in instances where you want to change the layout of the app before it prints out to the user.
