@@ -1,5 +1,11 @@
+import UseStateHook from './Components/useStateHook';
+
 function App() {
-  return <>hello</>;
+  return (
+    <>
+      <UseStateHook />
+    </>
+  );
 }
 
 export default App;
