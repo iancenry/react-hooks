@@ -89,3 +89,57 @@ const UseReducer = () => {
 - Similar to useEffect the difference is that useLayoutEffect is called in an earlier stage of the page rendering.
 - useEffect is called after everything is rendered into the page and shown to the user while useLayoutEffect is called before stuff is printed to the user.
 - Can be used in instances where you want to change the layout of the app before it prints out to the user.
+
+## useImperativeHandle
+
+- Used in specific situations eg when creating a reusable component that needs to be invoked from the outside.
+- From the example in the code we are calling a state from outside the component in the parent.
+- Since you cant reference a component directly, we got to the child component and use `forwardRef` function which allows us to transform a functional component and allow it to accept a reference from parent.
+-
+
+## useContext
+
+- Passing state as props from parent components to child components as in the first example below works for very simple cases. If we had a lot of states, it doesnt make sense passing all of them as props since it will make the code unmaintainable.
+- The context api allows management of state more easily.
+- The codes are just examples, it is recommended to separate the context logic in a separate file.
+
+```jsx
+// Before
+// In UseContext.jsx
+import { useState } from 'react';
+import Login from './Login';
+import User from './User';
+
+const UseContext = () => {
+  const [username, setUsername] = useState('');
+
+  return (
+    <div>
+      <Login setUsername={setUsername} /> <User username={username} />
+    </div>
+  );
+};
+
+// In Login.jsx
+const Login = ({ setUsername }) => {
+  return (
+    <div>
+      <input
+        type="text"
+        onChange={(event) => setUsername(event.target.value)}
+      />
+    </div>
+  );
+};
+
+// In User.jsx
+const User = ({ username }) => {
+  return (
+    <div>
+      <h1>User: {username}</h1>
+    </div>
+  );
+};
+
+// After - 1:04:40
+```
