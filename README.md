@@ -102,6 +102,7 @@ const UseReducer = () => {
 - Passing state as props from parent components to child components as in the first example below works for very simple cases. If we had a lot of states, it doesnt make sense passing all of them as props since it will make the code unmaintainable.
 - The context api allows management of state more easily.
 - The codes are just examples, it is recommended to separate the context logic in a separate file.
+- createContext allows us to create a context. A context is a collection of states/information that you want to access throughout the whole tree of components inside the component you're in.
 
 ```jsx
 // Before
@@ -141,5 +142,113 @@ const User = ({ username }) => {
   );
 };
 
-// After - 1:04:40
+// After - check code
+```
+
+## useMemo
+
+- Helps improve performance and decrease latency on huge computations that you make throughout the app.
+- The `findLongestName` function will be recomputed any time a state changes eg the `toggle state`; notive how when toggle is clicked in the code below 'THIS WAS COMPUTED' prints all the time.
+- We only want to recompute whenever the actual data changes so we use the hook with very large computations.
+- Just call the function inside the useMemo hook and call the memoized function instead. The hook takes in a callback function and a dependency array just like in useEffect.
+- Whe we click toggle after using the hook 'THIS WAS COMPUTED' prints only once since data hasnt changed.
+
+```jsx
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+const UseMemo = () => {
+  const [data, setData] = useState(null);
+  const [toggle, setToggle] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get('https://jsonplaceholder.typicode.com/comments')
+      .then((res) => setData(res.data));
+  }, [data]);
+
+  const findLongestName = (comments) => {
+    if (!comments) return null;
+
+    let longestName = '';
+    for (const element of comments) {
+      let currentName = element.name;
+      if (currentName.length > longestName.length) {
+        longestName = currentName;
+      }
+    }
+
+    console.log('THIS WAS COMPUTED');
+    return longestName;
+  };
+
+  return (
+    <div>
+      {findLongestName(data)}
+      <button onClick={() => setToggle(!toggle)}>Toggle</button>
+      {toggle && <h1>toggled</h1>}
+    </div>
+  );
+};
+
+export default UseMemo;
+
+/**
+ *  for (let i = 0; i < comments.length; i++) {
+      let currentName = comments[i].name;
+      if (currentName.length > longestName.length) {
+        longestName = currentName;
+      }
+    }
+ */
+```
+
+## useCallback
+
+- it is similar to the useMemo hook since it solves almost the same problem.
+- When you have a function, it will recreate itself at every re-render and this will create problems in situations you want to use `useCallback` and `useMemo`
+- In the `useMemo` hook you are able to store a value that is memoized from a function while the `useCallback` will store the whole function
+  - useCallback - function
+  - useMemo- value
+
+```jsx
+// Before
+//UseCallback.jsx
+import axios from 'axios';
+import { useState } from 'react';
+import Child from './Child';
+
+const UseCallback = () => {
+  const [toggle, setToggle] = useState(false);
+  const [data, setData] = useState('Some comment');
+
+  const returnComment = () => {
+    return data;
+  };
+
+  return (
+    <div>
+      <Child returnComment={returnComment} />
+      <button onClick={() => setToggle(!toggle)}>Toggle</button>
+      {toggle && <h1>toggled</h1>}
+    </div>
+  );
+};
+
+export default UseCallback;
+
+//Child.jsx
+import { useEffect } from 'react';
+
+const Child = ({ returnComment }) => {
+  useEffect(() => {
+    console.log('Function was called');
+  }, [returnComment]);
+
+  return <div>{returnComment()}</div>;
+};
+
+export default Child;
+
+//After- check code.
 ```
