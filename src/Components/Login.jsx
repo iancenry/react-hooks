@@ -1,4 +1,8 @@
+import { useContext } from 'react';
+import { AppContext } from './UseContext';
+
 const Login = () => {
+  const { setUsername } = useContext(AppContext);
   return (
     <div>
       <input
