@@ -104,6 +104,8 @@ const UseReducer = () => {
 - The codes are just examples, it is recommended to separate the context logic in a separate file.
 - createContext allows us to create a context. A context is a collection of states/information that you want to access throughout the whole tree of components inside the component you're in.
 
+* The Context API is ideal for data that is considered “global” but not large or complex enough for a dedicated state manager like Redux, such as the user’s current language, current theme, or even data from a multi-step form before being sent to an API.
+
 ```jsx
 // Before
 // In UseContext.jsx
